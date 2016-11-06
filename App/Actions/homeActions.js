@@ -8,3 +8,9 @@ export function getAddress() {
     type: ActionTypes.getAddress
   };
 }
+
+export function getCurrentPrice() {
+  return {
+    type: ActionTypes.getCurrentPrice
+  };
+}

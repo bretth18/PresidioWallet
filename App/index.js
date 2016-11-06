@@ -16,7 +16,8 @@ class App extends Component {
       <Provider store={store} >
         <RouterWithRedux>
           <Scene key="root">
-            <Scene key="HomeContainer" component={HomeContainer} title="HomeContainer" initial={true} />
+            <Scene key="HomeContainer"
+               component={HomeContainer} title="HomeContainer" initial={true} hideNavBar />
           </Scene>
 
         </RouterWithRedux>

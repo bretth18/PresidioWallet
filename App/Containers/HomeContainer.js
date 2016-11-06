@@ -19,7 +19,7 @@ class HomeContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    //home: state.home.etc
+    home: state.home
   };
 }
 
@@ -27,4 +27,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(HomeActions,dispatch);
 }
 
-export default connect(mapStateToProps,mapDispatchToProps);
+export default connect(mapStateToProps,mapDispatchToProps)(HomeContainer);

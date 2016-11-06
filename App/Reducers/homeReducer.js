@@ -8,15 +8,21 @@ const initialState = {
 };
 
 export function homeReducer(state = initialState, action) {
-
+  let btcPrice;
   console.log(action);
   switch(action.type) {
 
     case ActionTypes.getAddress:
-      return { ...state };
+      return {
+        ...state
+      };
 
 
-
+    case ActionTypes.getCurrentPrice:
+      return {
+        ...state,
+        btcPrice: btcPrice,
+      };
     default:
       return state;
 
