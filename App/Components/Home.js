@@ -23,17 +23,61 @@ class Home extends Component {
 
 
   componentWillMount(){
+    this.getLocalAddress().done();
 
   }
 
+  async getLocalAddress() {
+    try {
+      console.log('try hit');
+      const walletAddress = await AsyncStorage.getItem('walletAddress');
+      if (walletAddress === null) {
+        const keypair = Bitcoin.ECPair.makeRandom();
+        let walletAddress = keypair.getAddress();
+
+        AsyncStorage.setItem('walletAddress', walletAddress, (error) => {
+          if (error) {
+            console.log('failed to update Async with new address: ', error);
+          } else {
+            console.log('new wallet address set in Async: ', walletAddress);
+          }
+        });
+        this.props.getAddress(walletAddress);
+        console.log('ADRESS FROM ASYNC', walletAddress);
+      } else if (walletAddress != null) {
+        this.props.getAddress(walletAddress);
+        console.log('ADRESS FROM ASYNC', walletAddress);
+      }
+    } catch (error) {
+      // alert error
+      console.log('error retrieving from async: ', error);
+      console.log('generating new address...');
+      const keypair = Bitcoin.ECPair.makeRandom();
+      let walletAddress = keypair.getAddress();
+
+      AsyncStorage.setItem('walletAddress', walletAddress, (error) => {
+        if (error) {
+          console.log('failed to update Async with new address: ', error);
+        } else {
+          console.log('new wallet address set in Async: ', walletAddress);
+        }
+      });
+    }
+  }
   componentDidMount() {
+    this.getLocalAddress().done();
+
+  }
+
+  testTransaction() {
 
   }
 
   render() {
+    console.log('home props',this.props);
     let bitcoinPrice = null;
-    const keypair = Bitcoin.ECPair.makeRandom();
-    let bitcoinAddress = keypair.getAddress();
+    let bitcoinAddress = this.props.currentAddress;
+    console.log('render ', this.props.currentAddress);
     return (
       <Container>
 
@@ -45,7 +89,7 @@ class Home extends Component {
         <Content >
           <Text> This is the home Component </Text>
           <Text> {bitcoinPrice} </Text>
-          <Text> Address: {bitcoinAddress} </Text>
+          <Text> Address: {this.props.currentAddress} </Text>
           <Button small block > Send BTC </Button>
           <Button small block > Recieve BTC </Button>
         </Content>

@@ -3,9 +3,10 @@
 import ActionTypes from '../Constants/ActionTypes';
 
 // * New */
-export function getAddress() {
+export function getAddress(addressData) {
   return {
-    type: ActionTypes.getAddress
+    type: ActionTypes.getAddress,
+    currentAddress: addressData
   };
 }
 
