@@ -7,13 +7,13 @@ import {
  Alert,
  NetInfo } from 'react-native';
 
+
  import React, { Component } from 'react';
 
 import { Actions } from 'react-native-router-flux';
 import { Container, Content,  Header, Footer, FooterTab, Title, Icon, Button} from 'native-base';
 
 /*btc*/
-import '../../shim';
 import Bitcoin from 'react-native-bitcoinjs-lib';
 import * as BitcoinHandler from '../Bitcoin/BitcoinHandler';
 
@@ -24,53 +24,47 @@ class Home extends Component {
 
 
   componentWillMount(){
-    this.getLocalAddress().done();
-    this.testTransaction();
+    // this.getWalletData().done();
+    // this.testTransaction();
   }
 
   generatePassword() {
 
   }
 
-  async getLocalAddress() {
+  async getWalletData() {
     try {
-      console.log('try hit');
-      const walletAddress = await AsyncStorage.getItem('walletAddress');
-      if (walletAddress === null) {
-        const keypair = Bitcoin.ECPair.makeRandom();
-        let walletAddress = keypair.getAddress();
+      const walletData = await AsyncStorage.getItem('walletData');
+      if (walletData === null) {
+        // create a wallet
+        /* NOTE: THIS SHOULD TRIGGER USER DISPLAY OF PASSPHRASE -- METHOD WILL CHANGE */
+        let walletObject = BitcoinHandler.createWallet();
+        let keyAddress = walletObject.privateKey.getAddress();
+        // update redux store
+        this.props.getAddress(keyAddress);
 
-        AsyncStorage.setItem('walletAddress', walletAddress, (error) => {
+        // store in async
+
+        AsyncStorage.setItem('walletData', JSON.stringify(walletObject), (error) => {
           if (error) {
-            console.log('failed to update Async with new address: ', error);
+            console.log('failed to update Async with new wallet data:', error);
           } else {
-            console.log('new wallet address set in Async: ', walletAddress);
+            console.log('new wallet data set in Async:', walletObject);
           }
         });
-        this.props.getAddress(walletAddress);
-        console.log('ADRESS FROM ASYNC', walletAddress);
-      } else if (walletAddress != null) {
-        this.props.getAddress(walletAddress);
-        console.log('ADRESS FROM ASYNC', walletAddress);
+      } else if (walletData != null) {
+        let asyncWalletData = JSON.parse(walletData);
+        console.log(asyncWalletData.wif);
+        this.props.getAddress(asyncWalletData.wif.getAddress());
+        console.log('updated address based on async', this.props.currentAddress);
       }
     } catch (error) {
-      // alert error
-      console.log('error retrieving from async: ', error);
-      console.log('generating new address...');
-      const keypair = Bitcoin.ECPair.makeRandom();
-      let walletAddress = keypair.getAddress();
-
-      AsyncStorage.setItem('walletAddress', walletAddress, (error) => {
-        if (error) {
-          console.log('failed to update Async with new address: ', error);
-        } else {
-          console.log('new wallet address set in Async: ', walletAddress);
-        }
-      });
+      console.log('ERROR RETRIEVING FROM ASYNC', error);
     }
   }
+
   componentDidMount() {
-    this.getLocalAddress().done();
+    this.getWalletData().done();
 
 
   }
