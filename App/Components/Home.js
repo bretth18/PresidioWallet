@@ -15,6 +15,7 @@ import { Container, Content,  Header, Footer, FooterTab, Title, Icon, Button} fr
 /*btc*/
 import '../../shim';
 import Bitcoin from 'react-native-bitcoinjs-lib';
+import * as BitcoinHandler from '../Bitcoin/BitcoinHandler';
 
 class Home extends Component {
   constructor(props) {
@@ -24,6 +25,10 @@ class Home extends Component {
 
   componentWillMount(){
     this.getLocalAddress().done();
+    this.testTransaction();
+  }
+
+  generatePassword() {
 
   }
 
@@ -67,10 +72,12 @@ class Home extends Component {
   componentDidMount() {
     this.getLocalAddress().done();
 
+
   }
 
   testTransaction() {
-
+    let passPhrase = BitcoinHandler.generatePassphrase();
+    BitcoinHandler.generatePrivateKey(passPhrase);
   }
 
   render() {
