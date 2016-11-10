@@ -5,11 +5,12 @@ import ActionTypes from '../Constants/ActionTypes';
 const initialState = {
   btcPrice: null,
   currentAddress: null,
+  walletObject: null,
 
 };
 
 export function homeReducer(state = initialState, action) {
-  let btcPrice, currentAddress;
+  let btcPrice, currentAddress, walletObject;
   console.log(action);
   switch(action.type) {
 
@@ -26,6 +27,14 @@ export function homeReducer(state = initialState, action) {
         ...state,
         btcPrice: btcPrice,
       };
+
+    case ActionTypes.setWalletObject:
+      walletObject = action.walletObject;
+      return {
+        ...state,
+        walletObject: walletObject
+      };
+      
     default:
       return state;
 

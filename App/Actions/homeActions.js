@@ -15,3 +15,10 @@ export function getCurrentPrice() {
     type: ActionTypes.getCurrentPrice
   };
 }
+
+export function setWalletObject(walletObject) {
+  return {
+    type: ActionTypes.setWalletObject,
+    walletObject: walletObject,
+  };
+}

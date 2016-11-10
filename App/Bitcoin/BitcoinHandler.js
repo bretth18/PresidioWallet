@@ -1,12 +1,12 @@
 'use strict';
 
-// import {  } from 'bitcore-lib';
-// import Mnemonic from 'bitcore-mnemonic';
+
 import Bitcoin from 'react-native-bitcoinjs-lib';
 import bip39 from 'bip39';
 import crypto from 'crypto';
 import bigi from 'bigi';
 
+/* Generates a new 12 word Mnemonic passphrase */
 export function generatePassphrase() {
   // gen new phrase
   let hashPhrase = bip39.generateMnemonic();
@@ -31,6 +31,7 @@ export function generatePassphrase() {
   }
 }
 
+/* Retrieve hash from Deterministic Phrase */
 export function getHashFromPhrase(phrase) {
   let hash = Bitcoin.crypto.hash256(phrase);
   return hash;
@@ -46,12 +47,15 @@ export function generatePrivateKey(phraseObject) {
   return privateKey;
 }
 
+/* Converts a keyPair to WIF format */
 export function generateWIF(privateKey) {
   let wifKey = privateKey.toWIF();
 
   return wifKey;
 }
 
+/* Creates a new wallet object with a
+   newly generated passphrase */
 export function createWallet() {
   // generate phrase object
   let passphrase = generatePassphrase();

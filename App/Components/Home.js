@@ -24,7 +24,8 @@ class Home extends Component {
 
 
   componentWillMount(){
-    // this.getWalletData().done();
+    this.getWalletData().done();
+
     // this.testTransaction();
   }
 
@@ -42,7 +43,7 @@ class Home extends Component {
         let keyAddress = walletObject.privateKey.getAddress();
         // update redux store
         this.props.getAddress(keyAddress);
-
+        this.props.setWalletObject(walletObject);
         // store in async
 
         AsyncStorage.setItem('walletData', JSON.stringify(walletObject), (error) => {
@@ -64,9 +65,17 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    this.getWalletData().done();
+    // this.displayPassphrase();
+
+    // console.log('reached');
+    // this.getWalletData().done();
+  }
 
 
+
+  displayPassphrase() {
+    let phraseArray = this.props.walletObject.passphrase.split(' ');
+    Actions.PassphraseModal({passphrase: phraseArray, hide: false});
   }
 
   testTransaction() {
@@ -78,6 +87,9 @@ class Home extends Component {
     console.log('home props',this.props);
     let bitcoinPrice = null;
     let bitcoinAddress = this.props.currentAddress;
+    if (this.props.walletObject) {
+      this.displayPassphrase();
+    }
     console.log('render ', this.props.currentAddress);
     return (
       <Container>

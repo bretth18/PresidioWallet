@@ -12,6 +12,7 @@ const ActionTypes = {
   getAddress: 'GET_ADDRESS',
   checkingAddress: 'CHECKING_ADDRESS',
   checkedAddress: 'CHECKED_ADDRESS',
+  setWalletObject: 'SET_WALLET_OBJECT',
 
 
 
