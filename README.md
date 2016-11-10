@@ -16,12 +16,11 @@
 ##Contributing
 * Pull requests are welcome!
 * Please try to adhere to the AirBnb styleguide
-* Join gitter
+
 
 ##Testing
 * Clone the repo ```git clone ```
 * Install with ```npm install --save```
-* Link project dependencies w/rnpm ```rnpm link```
 * Run with ```react-native run-ios``` or open in Xcode
 
 ##Screenshots

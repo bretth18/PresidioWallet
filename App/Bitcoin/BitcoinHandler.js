@@ -3,11 +3,6 @@
 // import {  } from 'bitcore-lib';
 import Mnemonic from 'bitcore-mnemonic';
 
-
-// export function generatePrivateKey() {
-//   var
-// }
-
 export function generatePassphrase() {
   // gen new phrase
   let hashPhrase = new Mnemonic(Mnemonic.Words.ENGLISH);
