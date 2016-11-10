@@ -5,7 +5,12 @@
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/bretth18/PresidioWallet/master/LICENSE)
 * Bitcoin Wallet built with React-Native
-* Simple, clean, and easy to use
+
+
+##Features
+* Secure, Deterministic based wallet
+* No Servers: PresidioWallet interacts directly with the Bitcoin network
+* Easy to use
 
 
 
