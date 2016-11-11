@@ -10,9 +10,10 @@ export function getAddress(addressData) {
   };
 }
 
-export function getCurrentPrice() {
+export function setCurrentPrice(currentBTCPrice) {
   return {
-    type: ActionTypes.getCurrentPrice
+    type: ActionTypes.setCurrentPrice,
+    currentBTCPrice: currentBTCPrice
   };
 }
 
@@ -20,5 +21,12 @@ export function setWalletObject(walletObject) {
   return {
     type: ActionTypes.setWalletObject,
     walletObject: walletObject,
+  };
+}
+
+export function setBalance(currentBalance) {
+  return {
+    type: ActionTypes.setBalance,
+    currentBalance: currentBalance,
   };
 }

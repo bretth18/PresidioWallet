@@ -20,8 +20,9 @@ class HomeContainer extends Component {
 function mapStateToProps(state) {
   return {
     currentAddress: state.home.currentAddress,
-    btcPrice: state.home.btcPrice,
-    walletObject: state.home.walletObject
+    currentBTCPrice: state.home.currentBTCPrice,
+    walletObject: state.home.walletObject,
+    currentBalance: state.home.currentBalance,
   };
 }
 

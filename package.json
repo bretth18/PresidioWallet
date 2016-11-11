@@ -32,6 +32,7 @@
     "react-native-http": "github:tradle/react-native-http#834492d",
     "react-native-level-fs": "^3.0.0",
     "react-native-os": "^1.0.2",
+    "react-native-qrcode": "^0.2.2",
     "react-native-randombytes": "^2.1.0",
     "react-native-router-flux": "^3.36.0",
     "react-native-tcp": "^3.0.0",
