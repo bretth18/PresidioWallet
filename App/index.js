@@ -6,7 +6,7 @@ import store from './Store/Store';
 import { Router, Scene, Modal } from 'react-native-router-flux';
 
 import HomeContainer from './Containers/HomeContainer';
-import PassphraseModal from './Components/PassphraseModal';
+import PassphraseModalContainer from './Containers/PassphraseModalContainer';
 
 const RouterWithRedux = connect()(Router);
 
@@ -20,8 +20,9 @@ class App extends Component {
             <Scene key="root">
               <Scene key="HomeContainer"
                  component={HomeContainer} title="HomeContainer" initial={true} hideNavBar />
+                 <Scene key="PassphraseModalContainer" component={PassphraseModalContainer} />
+
             </Scene>
-            <Scene key="PassphraseModal" component={PassphraseModal} />
           </Scene>
         </RouterWithRedux>
       </Provider>

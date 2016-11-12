@@ -5,13 +5,14 @@ import {
  TextInput,
  AsyncStorage,
  Alert,
+ ActionSheetIOS,
  NetInfo } from 'react-native';
 
 
 import React, { Component } from 'react';
 
 import { Actions } from 'react-native-router-flux';
-import { Container, Content,  Header, Footer, FooterTab, Title, Icon, Button} from 'native-base';
+import { Container, Content,  Header, Footer, FooterTab, Title, Icon, Button, Card, CardItem} from 'native-base';
 import QRCode from 'react-native-qrcode';
 
 /*btc*/
@@ -29,48 +30,65 @@ class Home extends Component {
 
     // this.testTransaction();
   }
+  componentDidMount() {
+    // this.displayPassphrase();
+    this.getBTCPrice().done();
+    // this.updateAsyncStorage(this.props.walletObject.passphrase);
+    // console.log('reached');
+    // this.getWalletData().done();
+  }
 
-
+  updateAsyncStorage(passphrase) {
+    AsyncStorage.setItem('walletPhrase', passphrase, (error) => {
+      if (error) {
+        console.log('failed to update Async with new wallet phrase:', error);
+      } else {
+        console.log('new wallet phrase set in Async:', passphrase);
+      }
+    });
+  }
 
 
 
   async getWalletData() {
     try {
-      const walletData = await AsyncStorage.getItem('walletData');
-      if (walletData === null) {
+      const walletPhrase = await AsyncStorage.getItem('walletPhrase');
+      if (walletPhrase === null) {
         // create a wallet
+
         /* NOTE: THIS SHOULD TRIGGER USER DISPLAY OF PASSPHRASE -- METHOD WILL CHANGE */
         let walletObject = BitcoinHandler.createWallet();
         let keyAddress = walletObject.privateKey.getAddress();
         // update redux store
         this.props.getAddress(keyAddress);
         this.props.setWalletObject(walletObject);
+        this.updateAsyncStorage(walletObject.passphrase);
         // store in async
+        console.log('reached');
+        // AsyncStorage.setItem('walletPhrase', walletObject.passphrase, (error) => {
+        //   if (error) {
+        //     console.log('failed to update Async with new wallet phrase:', error);
+        //   } else {
+        //     console.log('new wallet phrase set in Async:', walletObject.passphrase);
+        //   }
+        // });
+      } else if (walletPhrase != null) {
+        /* NOTE: should probably implement some checks here */
+        let asyncWalletPhrase = walletPhrase;
 
-        AsyncStorage.setItem('walletData', JSON.stringify(walletObject), (error) => {
-          if (error) {
-            console.log('failed to update Async with new wallet data:', error);
-          } else {
-            console.log('new wallet data set in Async:', walletObject);
-          }
-        });
-      } else if (walletData != null) {
-        let asyncWalletData = JSON.parse(walletData);
-        console.log(asyncWalletData.wif);
-        this.props.getAddress(asyncWalletData.wif.getAddress());
-        console.log('updated address based on async', this.props.currentAddress);
+        /* rebuild wallet object and place in redux store */
+        let walletObject = BitcoinHandler.reOpenWallet(asyncWalletPhrase);
+        // update store
+        this.props.getAddress(walletObject.privateKey.getAddress());
+        this.props.setWalletObject(walletObject);
+
+        console.log('updated address based on async phrase', this.props.currentAddress);
       }
     } catch (error) {
-      console.log('ERROR RETRIEVING FROM ASYNC', error);
+      console.warn('ERROR RETRIEVING FROM ASYNC', error);
     }
   }
 
-  componentDidMount() {
-    // this.displayPassphrase();
-    this.getBTCPrice().done();
-    // console.log('reached');
-    // this.getWalletData().done();
-  }
 
 // requests wallet transaction/balance data
   async getWalletBalance() {
@@ -106,8 +124,7 @@ class Home extends Component {
 
 
   displayPassphrase() {
-    let phraseArray = this.props.walletObject.passphrase.split(' ');
-    Actions.PassphraseModal({passphrase: phraseArray, hide: false});
+    Actions.PassphraseModalContainer();
   }
 
   testTransaction() {
@@ -115,21 +132,43 @@ class Home extends Component {
     BitcoinHandler.generatePrivateKey(passPhrase);
   }
 
+  showMyActionSheet() {
+    var BUTTONS = [
+      'Copy',
+      'Cancel',
+    ];
+    var CANCEL_INDEX = 1;
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: BUTTONS,
+      cancelButtonIndex: CANCEL_INDEX,
+    },
+    (buttonIndex) => {
+      this.setState({ clicked: BUTTONS[buttonIndex] });
+    });
+  }
+
   render() {
     console.log('home props',this.props);
     let fooBar;
     let imageCode;
-    if (this.props.walletObject) {
-       fooBar = <Button onPress={this.displayPassphrase()} small block > Try Me bitch </Button>;
-
-    }
+    // if (this.props.walletObject) {
+    //    fooBar = <Button onPress={Actions.PassphraseModalContainer()} small block > Try Me  </Button>;
+    //
+    // }
 
     if (this.props.currentAddress) {
-      imageCode = <QRCode
-                  value={this.props.currentAddress}
-                  size={200}
-                  bgColor='black'
-                  fgColor='white' />;
+      imageCode =
+      <Card style={{alignItems: 'center'}}>
+        <CardItem>
+        <QRCode
+          value={this.props.currentAddress}
+          size={200}
+          bgColor='black'
+          fgColor='white'
+          style={{position: 'center' }} />
+      </CardItem>
+      </Card>
+      ;
     }
     console.log('render ', this.props.currentAddress);
     return (
@@ -140,13 +179,24 @@ class Home extends Component {
 
         </Header>
 
-        <Content >
-          <Text> This is the home Component </Text>
-          <Text> Current BTC/USD: {this.props.currentBTCPrice} </Text>
-          <Text> Address: {this.props.currentAddress} </Text>
-          <Text> Balance: {this.props.currentBalance} </Text>
-          <Button small block onPress={this.getWalletBalance()} > Send BTC </Button>
-          <Button small block > Recieve BTC </Button>
+        <Content>
+          <Card>
+            <CardItem>
+              <Text> Current BTC/USD: {this.props.currentBTCPrice} </Text>
+            </CardItem>
+          </Card>
+          <Card>
+            <CardItem>
+              <Text > Address: {this.props.currentAddress} </Text>
+            </CardItem>
+          </Card>
+          <Card>
+            <CardItem>
+              <Text> Balance: {this.props.currentBalance} </Text>
+            </CardItem>
+          </Card>
+          <Button medium block rounded onPress={this.getWalletBalance()} > Send BTC </Button>
+          <Button medium block rounded > Recieve BTC </Button>
           {imageCode}
         </Content>
 

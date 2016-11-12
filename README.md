@@ -30,3 +30,4 @@
 * Run with ```react-native run-ios``` or open in Xcode
 
 ##Screenshots
+* SOON
