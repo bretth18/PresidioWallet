@@ -14,9 +14,9 @@
 
 
 ##Road Map
-- [ ]Transactions
-- [ ]Multiple wallets
-- [ ]QR Code scanning
+- [ ] Transactions
+- [ ] Multiple wallets
+- [ ] QR Code scanning
 
 
 ##Contributing
