@@ -54,6 +54,33 @@ export function generateWIF(privateKey) {
   return wifKey;
 }
 
+/* function executed upon re-open, takes phrase and
+    re-generates the key, returning a wallet object
+    TODO: Implement check measures                */
+export function reOpenWallet(hashPhrase) {
+  // regen hash
+  let privateKeyHex = Bitcoin.crypto.hash256(hashPhrase);
+  var d = bigi.fromBuffer(privateKeyHex);
+  console.log('regenerated private key hex from async phrase: ', d);
+
+  // generate the keyPair
+  let privateKey = new Bitcoin.ECPair(d);
+  privateKey.compressed = true;
+  console.log('regenerated private key from hash from async: ', privateKey);
+
+  // get WIF
+  let wif = generateWIF(privateKey);
+
+  let walletObject = {
+    passphrase: hashPhrase,
+    privateKey: privateKey,
+    wif: wif
+  };
+
+  return walletObject;
+
+}
+
 /* Creates a new wallet object with a
    newly generated passphrase */
 export function createWallet() {
@@ -70,4 +97,14 @@ export function createWallet() {
   };
 
   return walletObject;
+}
+
+/* transaction function takes our wallet private key and the address of the
+    recipient */
+export function createTransactionSend(myPrivateKey, recieveAddress) {
+
+  let myAddress = myPrivateKey.getAddress();
+
+  var transaction = new Bitcoin.TransactionBuilder();
+
 }

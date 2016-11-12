@@ -10,18 +10,19 @@
 ##Features
 * Secure, Deterministic based wallet
 * No Servers: PresidioWallet interacts directly with the Bitcoin network
-* Easy to use
-
-
+* Hashes are stored on the device, no server backed keypairs.
 
 
 ##Road Map
+- [ ]Transactions
+- [ ]Multiple wallets
+- [ ]QR Code scanning
 
 
 ##Contributing
 * Pull requests are welcome!
 * Please try to adhere to the AirBnb styleguide
-
+* Contact me, I'm on twitter [@brett_h18](https://twitter.com/brett_h18)
 
 ##Testing
 * Clone the repo ```git clone ```
