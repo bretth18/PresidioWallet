@@ -101,10 +101,19 @@ export function createWallet() {
 
 /* transaction function takes our wallet private key and the address of the
     recipient */
-export function createTransactionSend(myPrivateKey, recieveAddress) {
+export function createTransactionSend(myPrivateKey, recieveAddress, amount) {
 
   let myAddress = myPrivateKey.getAddress();
 
   var transaction = new Bitcoin.TransactionBuilder();
+
+  let tId = transaction.getId();
+
+  transaction.addInput(tId, 1);
+  /* NOTE: Amount is determined in Satoshi */
+  transaction.addOutput(recieveAddress,amount);
+
+  transaction.sign(0, myPrivateKey);
+  console.log(transaction.build().toHex());
 
 }
