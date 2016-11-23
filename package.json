@@ -25,8 +25,8 @@
     "path-browserify": "0.0.0",
     "process": "^0.11.9",
     "querystring-es3": "^0.2.1",
-    "react": "15.3.2",
-    "react-native": "0.37.0",
+    "react": "15.4.1",
+    "react-native": "0.38.0",
     "react-native-bitcoinjs-lib": "^2.3.4",
     "react-native-camera": "git+https://github.com/lwansbrough/react-native-camera.git",
     "react-native-crypto": "^2.0.1",
@@ -42,7 +42,7 @@
     "react-redux": "^4.4.5",
     "readable-stream": "^2.2.2",
     "redux": "^3.6.0",
-    "redux-actions": "^0.13.0",
+    "redux-actions": "^1.0.1",
     "redux-logger": "^2.7.4",
     "redux-thunk": "^2.1.0",
     "rn-nodeify": "github:mvayngrib/rn-nodeify",
@@ -59,9 +59,9 @@
   "devDependencies": {
     "babel-jest": "17.0.2",
     "babel-preset-react-native": "1.9.0",
-    "jest": "17.0.2",
-    "jest-react-native": "17.0.2",
-    "react-test-renderer": "15.3.2",
+    "jest": "17.0.3",
+    "jest-react-native": "17.0.3",
+    "react-test-renderer": "15.4.1",
     "rn-nodeify": "github:mvayngrib/rn-nodeify"
   },
   "react-native": {
